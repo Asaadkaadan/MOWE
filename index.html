@@ -37,9 +37,16 @@
 <em>From left to right</em>: Individual modules are assembled into array. Arrays are fitted with structural 3D-printed frames. Arrays and frames make a complete terminal that can be used in various applications, e.g., on board a multirotor UAV.</p>
 
 <h3>
+<a id="mowe-hardware" class="anchor" href="#mowe-hardware" aria-hidden="true"><span class="octicon octicon-link"></span></a>MOWE Hardware</h3>
+
+<p>Each modules is a single optical point (either transmitter, receiver or transceiver). Modules have specific geometric shapes (e.g., hexagons and pentagons) and feature an optical front-end on the top side (LED, VCSEL or PD) and a 32-bit ARM Cortex-M0 MCU on the bottom. The optical modules are free from connectors, wires, cables, and any other assemblies, rendering them as small and lightweight as possible. Edge pcb connectors are used for physical and electrical connections making the array lightweight, reliable and easy-to-assemble.</p>
+
+<p>More about MOWE hardware and specifications can be found here.</p>
+
+<h3>
 <a id="flexible--user-friendly" class="anchor" href="#flexible--user-friendly" aria-hidden="true"><span class="octicon octicon-link"></span></a>Flexible &amp; User-friendly</h3>
 
-<p>Each modules is a single optical point (either transmitter, receiver or transceiver). All modules run a custom-designed operating system called <strong>Array Operating System</strong> (AOS) that handles user interactions, inter-array communications, and array housekeeping functionality (e.g., cross-array routing, module labeling and identification, broadcast commands, firmware upgrades, and others).</p>
+<p>All modules run a custom-designed operating system called <strong>Array Operating System</strong> (AOS) that handles user interactions, inter-array communications, and array housekeeping functionality (e.g., cross-array routing, module labeling and identification, broadcast commands, firmware upgrades, and others).</p>
 
 <p>A <em>regular user</em> can interact with the array via the <strong>command line parser</strong> (CLP) utility within the AOS. The CLP can be accessed via any port in any module and features various intuitive control commands in a plain English language. Some commands are used to setup the array, ping the modules, rename them, and group them; other commands read samples from receiver modules and stream data in/out the modules at various speeds. More advanced commands are also available to update modules firmware on the fly, setup inter-array DMA streams, link two modules, and send a predefined signal out a transmitter module among others. These intuitive commands make the MOWE system easily accessible by any student/researcher regardless if he or she has hardware or Embedded Systems development expertise. </p>
 
@@ -60,7 +67,7 @@
 <p>I'm grateful to everyone contributed to this project, especially: </p>
 
 <ul>
-<li><p><strong>Fahed Babelli and **Walid Balid</strong> from the University of Oklahoma for their help in testing MOWE hardware.</p></li>
+<li><p><strong>Fahed Babelli</strong> and <strong>Walid Balid</strong> from the University of Oklahoma for their help in testing MOWE hardware.</p></li>
 <li><p><strong>Brady Deetz</strong> and the <strong><a href="http://www.tandysupercomputing.org/">Tandy Supercomputing Center</a></strong> (TSC) in Tulsa, Oklahoma for the development and support of the MOWE-Tandy Simulator. </p></li>
 <li><p><strong>Nishaal Parmer</strong> from the University of Oklahoma for analysing and developing inter-array routing and broadcasting algorithms.</p></li>
 </ul>
