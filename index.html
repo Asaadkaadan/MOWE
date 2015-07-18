@@ -43,14 +43,15 @@
 
 <p>The <em>Modular Optical Wireless Elements</em> (MOWE) system consists of smart, electrically interconnected modules that can be combined together to build flat and curved optical wireless array. This novel design offers lightweight, inexpensive, and wide field-of-view terminals for various applications ranging from user tracking and noise measurements to broadband connectivity and MIMO FSO.</p>
 
-<p>A single <em>array</em> is composed of multiple <em>modules</em> soldered side-by-side to form a single, continuous flat or curved surface that could be structurally supported by a 3D-printed plastic <em>frame</em>. The array, frame and a <em>central controller</em> with wired or wireless interface constitute a complete optical <em>terminal</em>. The MOWE concept is depicted below.
-<img src="images/MOWE_Concept.PNG" alt="MOWE Concept">
+<p>A single <em>array</em> is composed of multiple <em>modules</em> soldered side-by-side to form a single, continuous flat or curved surface that could be structurally supported by a 3D-printed plastic <em>frame</em>. The array, frame and a <em>central controller</em> with wired or wireless interface constitute a complete optical <em>terminal</em>. The MOWE concept is depicted below.</p>
+
+<p><img src="images/MOWE_Concept.PNG" alt="MOWE Concept">
 <em>From left to right</em>: Individual modules are assembled into array. Arrays are fitted with structural 3D-printed frames. Arrays and frames make a complete terminal that can be used in various applications, e.g., on board a multirotor UAV.</p>
 
 <h3>
 <a id="flexible--user-friendly" class="anchor" href="#flexible--user-friendly" aria-hidden="true"><span class="octicon octicon-link"></span></a>Flexible &amp; User-friendly</h3>
 
-<p>Each modules is a single optical point (transmitter, receiver or transceiver). All modules run a custom-designed operating system called <strong>Array Operating System</strong> (AOS) that handles user interactions, inter-array communications, and array housekeeping functionality (e.g., cross-array routing, module labeling and identification, broadcast commands, firmware upgrades, and others).</p>
+<p>Each modules is a single optical point (either transmitter, receiver or transceiver). All modules run a custom-designed operating system called <strong>Array Operating System</strong> (AOS) that handles user interactions, inter-array communications, and array housekeeping functionality (e.g., cross-array routing, module labeling and identification, broadcast commands, firmware upgrades, and others).</p>
 
 <p>A <em>regular</em> user can interact with the array via the <strong>command line parser</strong> (CLP) utility within the AOS. The CLP can be accessed via any port in any module and features various intuitive control commands in a plain English language. Some commands are used to setup the array, ping the modules, rename them, and group them; other commands read samples from receiver modules and stream data in/out the modules at various speeds. More advanced commands are also available to update modules firmware on the fly, setup inter-array DMA streams, link two modules, and send a predefined signal out a transmitter module among others. These intuitive commands make the MOWE system easily accessible by any student/researcher regardless if he or she has hardware or Embedded Systems development expertise. </p>
 
@@ -66,10 +67,20 @@
 <a id="research-papers" class="anchor" href="#research-papers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Research Papers</h3>
 
 <h3>
-<a id="how-to-contribute" class="anchor" href="#how-to-contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to contribute?</h3>
+<a id="acknowledgment" class="anchor" href="#acknowledgment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgment</h3>
+
+<p>I'm grateful to everyone contributed to this project especially: </p>
+
+<ul>
+<li>Fahed Babelli and Walid Balid from the University of Oklahoma for their help in testing MOWE hardware.</li>
+<li>Brady Deetz and the Tandy Supercomputing Center (TSC) in Tulsa, Oklahoma for the development and support of the MOWE-Tandy Simulator. </li>
+<li>Nishaal Parmer from the University of Oklahoma for analysing and developing inter-array routing and broadcasting algorithms.</li>
+</ul>
 
 <h3>
-<a id="acknowledgment" class="anchor" href="#acknowledgment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgment</h3>
+<a id="how-to-contribute" class="anchor" href="#how-to-contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to contribute?</h3>
+
+<p>This project is still in development and we'll be excited to get your feedback and participation! If you are interested about the topics listed above and would like to contribute, please email me at: asaad(dot)kaadan(at)ou(dot)edu to add you to the list of contributors.</p>
         </section>
 
         <footer>
