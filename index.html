@@ -47,6 +47,10 @@
 <img src="images/MOWE_Concept.PNG" alt="MOWE Concept">
 <em>From left to right</em>: Individual modules are assembled into array. Arrays are fitted with structural 3D-printed frames. Arrays and frames make a complete terminal that can be used in various applications, e.g., on board a multirotor UAV.</p>
 
+<p>Each modules is a single optical point (transmitter, receiver or transceiver). All modules run a custom-designed operating system called <strong>Array Operating System</strong> (AOS) that handles user interactions, inter-module communications, and array housekeeping functionality (e.g., cross-array routing, module labeling and identification, broadcast commands, firmware upgrades, and others).</p>
+
+<p>A <em>regular</em> user can interact with the array via the <strong>command line parser</strong> (CLP) utility within the AOS. The CLP can be accessed via any port in any module and features various intuitive control commands in a plain English language. Some commands are used to setup the array, ping the modules, rename them, and group them; other commands read samples from receiver modules and stream data in/out the modules at various speeds. More advanced commands are also available to update modules firmware on the fly, setup inter-array DMA streams, link two modules, and send a predefined signal out a transmitter module among others. These intuitive commands make the MOWE system easily accessible by any student/researcher regardless if he or she has hardware or Embedded Systems development expertise. <em>Experienced</em> users, on the other hand, can further leverage the system by writing their own firmware in C language or modifying the AOS and other available firmware implementations to suit their exact application.</p>
+
 <h3>
 <a id="possible-applications" class="anchor" href="#possible-applications" aria-hidden="true"><span class="octicon octicon-link"></span></a>Possible Applications</h3>
 
