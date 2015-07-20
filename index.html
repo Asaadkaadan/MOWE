@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>MOWE by Asaadkaadan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">MOWE</h1>
+      <h2 class="project-tagline">Modular Optical Wireless Elements</h2>
+      <a href="https://github.com/Asaadkaadan/MOWE" class="btn">View on GitHub</a>
+      <a href="https://github.com/Asaadkaadan/MOWE/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Asaadkaadan/MOWE/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <div style="text-align:center"><img src="images/sphere1.png" alt="Spherical Receiver"/></div>
+
+<h2>
+<a id="modular-optical-wireless-elements" class="anchor" href="#modular-optical-wireless-elements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modular Optical Wireless Elements</h2>
+
+<p>This project has been created by <strong><a href="https://www.linkedin.com/in/asaadkaadan">Asaad Kaadan</a></strong> at the <strong><a href="http://www.ou.edu/">University of Oklahoma</a></strong> (OU) as part of his phd research on mobile free-space optics (FSO) and optical wireless communications under supervision of <strong><a href="http://www.ou.edu/coe/ece/faculty_directory/dr_refai.html">Dr. Hazem Refai</a></strong> (University of Oklahoma) and <strong><a href="https://faculty.utulsa.edu/college-of-engineering-natural-sciences/electrical-and-computer-engineering/peter-lopresti">Dr. Peter LoPresti</a></strong> (University of Tulsa). We'll try to post most, if not all, materials related to this project online as open-source content, including hardware schematics, MCU firmware, and software development tools.</p>
+
+<h2>
+<a id="mowe-concept" class="anchor" href="#mowe-concept" aria-hidden="true"><span class="octicon octicon-link"></span></a>MOWE Concept</h2>
+
+<p>The <em>Modular Optical Wireless Elements</em> (MOWE) system consists of smart, electrically interconnected optical modules that can be combined together to build flat and curved optical wireless array. This novel design offers lightweight, inexpensive, and wide field-of-view terminals for various applications ranging from user tracking and noise measurements to broadband connectivity and MIMO FSO.</p>
+
+<p>A single <em>array</em> is composed of multiple <em>modules</em> soldered side-by-side to form a single, continuous flat or curved surface that could be structurally supported by a 3D-printed plastic <em>frame</em>. The array, frame and a <em>central controller</em> with wired or wireless interface constitute a complete optical <em>terminal</em>. The MOWE concept is depicted below.</p>
+
+<p><img src="images/MOWE_Concept.PNG" alt="MOWE Concept">
+<em>From left to right</em>: Individual modules are assembled into array. Arrays are fitted with structural 3D-printed frames. Arrays and frames make a complete terminal that can be used in various applications, e.g., on board a multirotor UAV.</p>
+
+<h2>
+<a id="mowe-hardware" class="anchor" href="#mowe-hardware" aria-hidden="true"><span class="octicon octicon-link"></span></a>MOWE Hardware</h2>
+
+<p>Each module is a single optical point (either transmitter, receiver or transceiver). Modules have specific geometric shapes (e.g., hexagons and pentagons) and feature an optical front-end on the top side (LED, VCSEL or PD) and a 32-bit ARM Cortex-M0 MCU on the bottom. The optical modules are free from connectors, wires, cables, and any other assemblies, rendering them as small and lightweight as possible. Edge pcb connectors are used for physical and electrical connections making the array lightweight, reliable and easy-to-assemble.</p>
+
+<p>More about MOWE hardware and specifications can be found <a href="https://github.com/Asaadkaadan/MOWE/wiki/MOWE-Hardware">here</a>.</p>
+
+<h2>
+<a id="flexible--user-friendly" class="anchor" href="#flexible--user-friendly" aria-hidden="true"><span class="octicon octicon-link"></span></a>Flexible &amp; User-friendly</h2>
+
+<p>All modules run a custom-designed operating system called <strong>Array Operating System</strong> (AOS) that handles user interactions, inter-array communications, and array housekeeping functionality (e.g., cross-array routing, module labeling and identification, broadcast commands, firmware upgrades, and others).</p>
+
+<p>A <em>regular user</em> can interact with the array via the <strong>command line parser</strong> (CLP) utility within the AOS. The CLP can be accessed via any port in any module and features various intuitive control commands in a plain English language. Some commands are used to setup the array, ping the modules, rename them, and group them; other commands read samples from receiver modules and stream data in/out the modules at various speeds. More advanced commands are also available to update modules firmware on the fly, setup inter-array DMA streams, link two modules, and send a predefined signal out a transmitter module among others. These intuitive commands make the MOWE system easily accessible by any student/researcher regardless if he or she has hardware or Embedded Systems development expertise. </p>
+
+<p><em>Experienced users</em>, on the other hand, can further leverage the system by writing their own firmware in C language or modifying the AOS and other available firmware implementations to suit their exact application.</p>
+
+<h2>
+<a id="development-tools" class="anchor" href="#development-tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development Tools</h2>
+
+<p>We are working on a couple of software tools to aid in developing MOWE terminals, especially large, complex designs.</p>
+
+<ul>
+<li><p><strong>MOWE-Tandy Simulator</strong>: The guys at the Tandy Supercomputing Center are working on a multi-agent, MPI-based simulator for MOWE that can be run locally or on their supercomputer. The simulator will be very handy to test how certain algorithms scale up to hundreds or even thousands of modules, such as those expected in massive MIMO applications.</p></li>
+<li><p><strong>MOWE Automatic Topology Generator (ATG)</strong>: The ATG is a MATLAB tool to graphically design a MOWE array and automatically generate all required configuration and topology files, saving developers a lot of tedious, error-prone work.</p></li>
+</ul>
+
+<h2>
+<a id="possible-applications" class="anchor" href="#possible-applications" aria-hidden="true"><span class="octicon octicon-link"></span></a>Possible Applications</h2>
+
+<ul>
+<li>Short- and medium-range fixed FSO links.</li>
+<li>Short- and medium-range mobile FSO (air-to-air, air-to-ground, and ground-to-ground).</li>
+<li>Infrared and visible light communications (VLC).</li>
+<li>Indoor optical wireless communications. </li>
+<li>Broadband optical communications and LiFi.</li>
+<li>Last-mile FSO technology.</li>
+<li>User tracking and 3D localization.</li>
+<li>Multi-input-multi-output (MIMO) optical antennas.</li>
+<li>Testbeds for spatial and wavelength diversity.</li>
+<li>Testbeds for optical wireless networks.</li>
+<li>Optical relays and switches.</li>
+<li>Background noise measurement and estimation.</li>
+<li>Optical channel modeling and estimation.</li>
+<li>Optical radar and remote optical sensing.</li>
+<li>Distributed sensing, estimation and control. </li>
+<li>Distributed computing systems.</li>
+<li>Educational platforms and lab experiments for the topics listed above.</li>
+<li>...</li>
+</ul>
+
+<h2>
+<a id="projects" class="anchor" href="#projects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Projects</h2>
+
+<ul>
+<li>Spherical omnidirectional receiver terminal (hexagons only).
+<div style="text-align:center"><img src="images/sphere_thumb.png" alt="Project_Spherical_Receiver"/></div>
+</li>
+</ul>
+
+<h2>
+<a id="research-papers" class="anchor" href="#research-papers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Research Papers</h2>
+
+<h3>
+<a id="mowe" class="anchor" href="#mowe" aria-hidden="true"><span class="octicon octicon-link"></span></a>MOWE</h3>
+
+<ul>
+<li>Kaadan, A.; Refai, H.H.; LoPresti, P.G., "<em>On the Development of Modular Optical Wireless Elements (MOWE)</em>," submitted to IEEE Globecom Sixth Workshop on Optical Wireless Communications for review.</li>
+</ul>
+
+<h3>
+<a id="optical-arrays" class="anchor" href="#optical-arrays" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optical Arrays</h3>
+
+<ul>
+<li>Kaadan, A.; Refai, H.H.; LoPresti, P.G., "<em>On the Coverage of Spherical Receiver Arrays for Mobile Free-space Optical Communication</em>," submitted to IEEE Transactions on Aerospace and Electronics Systems for review.</li>
+<li>Kaadan, A.; Refai, H.H.; LoPresti, P.G., "<em><a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6936323&amp;queryText=kaadan&amp;newsearch=true&amp;searchField=Search_All">Multielement FSO Transceivers Alignment for Inter-UAV Communications</a></em>," Lightwave Technology, Journal of , vol.32, no.24, pp.4785,4795, Dec.15, 15 2014.</li>
+<li>Kaadan, A.; Dayong Zhou; Refai, H.H.; LoPresti, P.G., "<em><a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6548513&amp;searchWithin%5B%5D=%22Authors%22%3A.QT.Kaadan%2C+Asaad.QT.&amp;newsearch=true">Modeling of aerial-to-aerial short-distance free-space optical links</a></em>," Integrated Communications, Navigation and Surveillance Conference (ICNS), 2013 , vol., no., pp.1,12, 22-25 April 2013.</li>
+</ul>
+
+<h2>
+<a id="training--documentation" class="anchor" href="#training--documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Training &amp; Documentation</h2>
+
+<h2>
+<a id="acknowledgment" class="anchor" href="#acknowledgment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgment</h2>
+
+<p>I'm grateful to everyone contributed to this project, especially: </p>
+
+<ul>
+<li><p><strong>Fahed Babelli</strong> and <strong>Walid Balid</strong> from the University of Oklahoma for their help in testing MOWE hardware.</p></li>
+<li><p><strong>Brady Deetz</strong> and the <strong><a href="http://www.tandysupercomputing.org/">Tandy Supercomputing Center</a></strong> (TSC) in Tulsa, Oklahoma for the development and support of the MOWE-Tandy Simulator. </p></li>
+<li><p><strong>Nishaal Parmer</strong> from the University of Oklahoma for analysing and developing inter-array routing and broadcasting algorithms.</p></li>
+</ul>
+
+<h2>
+<a id="how-to-contribute" class="anchor" href="#how-to-contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to contribute?</h2>
+
+<p>This project is still in development and we'll be excited to get your feedback and participation! If you are interested about the topics listed above and would like to contribute, please email me at: asaad(dot)kaadan(at)ou(dot)edu to add you to the list of contributors.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Asaadkaadan/MOWE">MOWE</a> is maintained by <a href="https://github.com/Asaadkaadan">Asaadkaadan</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
