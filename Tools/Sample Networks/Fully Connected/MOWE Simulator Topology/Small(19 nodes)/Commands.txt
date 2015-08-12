@@ -17,5 +17,5 @@ add hexa rx p4>m6:p1
 add hexa rx p4>m7:p1
 add hexa rx p3>m7:p6
 add hexa rx p2>m7:p5
-make topology
-
+make sim topology
+exit

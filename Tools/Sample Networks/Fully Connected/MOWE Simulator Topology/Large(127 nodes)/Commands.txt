@@ -126,5 +126,6 @@ add hexa rx p3>m89:p6
 add hexa rx p3>m90:p6
 add hexa rx p3>m91:p6
 add hexa rx p3>m62:p6
-make topology
+make sim topology
+exit
 

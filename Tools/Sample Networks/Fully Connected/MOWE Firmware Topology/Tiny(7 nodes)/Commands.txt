@@ -5,4 +5,5 @@ add hexa rx p6>m1:p3
 add hexa rx p5>m1:p2
 add hexa rx p4>m1:p1
 add hexa rx p3>m1:p6
-make topology
+make mcu topology
+exit

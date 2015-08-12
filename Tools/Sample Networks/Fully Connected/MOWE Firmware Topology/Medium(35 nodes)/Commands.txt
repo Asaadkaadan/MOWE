@@ -35,5 +35,6 @@ add hexa rx p4>m18:p1
 add hexa rx p3>m18:p6
 add hexa rx p2>m18:p5
 add hexa rx p2>m19:p5
-make topology
+make mcu topology
+exit
 
