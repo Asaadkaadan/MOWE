@@ -16,10 +16,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 
-uint8_t masterOutPort = 0; float streamingRate = 0; uint8_t ledStatus = 0;
+uint8_t masterOutPort = 0; float streamingRate = 0; uint8_t ledStatus = 1;
 uint8_t streamTest = 0, streamLoose = 0;
-uint8_t syncCodeMode0 = 250, syncCodeMode1 = 240, syncCodeMode2 = 235;
-uint8_t testCodeMode0 = 130, testCodeMode1 = 125, testCodeMode2 = 120; 
+uint8_t syncCodeMode0 = 250, syncCodeMode1 = 240, syncCodeMode2 = 235, syncCodeMode3 = 230;
+uint8_t testCodeMode0 = 130, testCodeMode1 = 125, testCodeMode2 = 120, testCodeMode3 = 115; 
 uint16_t adc = 0;
 extern TaskHandle_t FrontEndTaskHandle;
 
@@ -95,7 +95,11 @@ void FrontEndTask(void * argument)
 				} else if (ledStatus == 2) {
 					writePx(P2, (const char *) &syncCodeMode2, 1, HAL_MAX_DELAY);		/* Route A */
 					writePx(P3, (const char *) &syncCodeMode2, 1, HAL_MAX_DELAY);		/* Route B */
-					writePx(P4, (const char *) &syncCodeMode2, 1, HAL_MAX_DELAY);		/* Route C */					
+					writePx(P4, (const char *) &syncCodeMode2, 1, HAL_MAX_DELAY);		/* Route C */		
+				} else if (ledStatus == 3) {
+					writePx(P2, (const char *) &syncCodeMode3, 1, HAL_MAX_DELAY);		/* Route A */
+					writePx(P3, (const char *) &syncCodeMode3, 1, HAL_MAX_DELAY);		/* Route B */
+					writePx(P4, (const char *) &syncCodeMode3, 1, HAL_MAX_DELAY);		/* Route C */						
 				}
 			} else {
 				if (ledStatus == 0) {
@@ -109,7 +113,11 @@ void FrontEndTask(void * argument)
 				} else if (ledStatus == 2) {
 					writePx(P2, (const char *) &testCodeMode2, 1, HAL_MAX_DELAY);		/* Route A */
 					writePx(P3, (const char *) &testCodeMode2, 1, HAL_MAX_DELAY);		/* Route B */
-					writePx(P4, (const char *) &testCodeMode2, 1, HAL_MAX_DELAY);		/* Route C */					
+					writePx(P4, (const char *) &testCodeMode2, 1, HAL_MAX_DELAY);		/* Route C */			
+				} else if (ledStatus == 3) {
+					writePx(P2, (const char *) &testCodeMode3, 1, HAL_MAX_DELAY);		/* Route A */
+					writePx(P3, (const char *) &testCodeMode3, 1, HAL_MAX_DELAY);		/* Route B */
+					writePx(P4, (const char *) &testCodeMode3, 1, HAL_MAX_DELAY);		/* Route C */						
 				}
 			}
 			
@@ -120,8 +128,8 @@ void FrontEndTask(void * argument)
 			//adc = HAL_ADC_GetValue(&hadc);
 			adc = SamplePD();
 			
-			/* LED status mode 0: Measure streaming rate */
-			if (ledStatus == 0)		LED_toggle();
+			/* LED status mode 1: Measure streaming rate */
+			if (ledStatus == 1)		LED_toggle();
 			
 			/* Write samples into buffer */
 			if (!streamTest) {
@@ -135,8 +143,8 @@ void FrontEndTask(void * argument)
 			/* Wait some time to download the data from previous module */
 			Delay_us(850);
 			
-			/* LED status mode 2: Measure download delay */
-			if (ledStatus == 2)		LED_on();
+			/* LED status mode 3: Measure download delay */
+			if (ledStatus == 3)		LED_on();
 			/* Transmit the samples out */
 			if (!streamLoose){
 				writePxMutex(masterOutPort, (char*) dataBuffer, ArraySize*2, cmd50ms, HAL_MAX_DELAY);		/* 272 usec */
@@ -148,8 +156,8 @@ void FrontEndTask(void * argument)
 				}
 				writePxMutex(masterOutPort, "\n\r", 2, cmd50ms, HAL_MAX_DELAY);
 			}
-			/* LED status mode 2: Measure download delay */
-			if (ledStatus == 2)		LED_off();
+			/* LED status mode 3: Measure download delay */
+			if (ledStatus == 3)		LED_off();
 			
 			/* Reset the buffer */
 			memset(dataBuffer, 0xFF, ArraySize*2);
@@ -169,10 +177,11 @@ void FrontEndTask(void * argument)
 /* Sample the slaves and forward data to the master */
 void SampleAndForward(void)
 {	
-	/* LED status mode 1: Measure upload delay */
-	if (ledStatus == 1)		LED_off();		
+	/* LED status mode 2: Measure upload delay */
+	if (ledStatus == 2)		LED_off();		
 	
 	/* Synchronization - Wait some time to compensate for propagation delay */
+	/* slave sync delay = max depth - # of hops to the master */
 #if (_module == 2)					
 	Delay_us(5*4.2);				/* Wait for 5 hops */	
 #elif (_module == 3)				
@@ -252,8 +261,8 @@ void SampleAndForward(void)
 	//adc = HAL_ADC_GetValue(&hadc);
 	adc = SamplePD();
 	
-	/* LED status mode 0: Measure streaming rate */
-	if (ledStatus == 0)		LED_toggle();
+	/* LED status mode 1: Measure streaming rate */
+	if (ledStatus == 1)		LED_toggle();
 
 	
 #if (_module == 2)	
@@ -267,8 +276,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(490);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P5, (char *) &dataBuffer[2], 20, cmd50ms, HAL_MAX_DELAY);		/* 85 usec */
 
@@ -283,8 +292,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(264);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P5, (char*) &dataBuffer[4], 18, cmd50ms, HAL_MAX_DELAY);		/* 78 usec */
 	
@@ -299,8 +308,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(160);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P5, (char*) &dataBuffer[6], 8, cmd50ms, HAL_MAX_DELAY);		/* 45 usec */
 	
@@ -315,8 +324,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(84);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[8], 6, cmd50ms, HAL_MAX_DELAY);		/* 39 usec */
 	
@@ -331,8 +340,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(30);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[10], 4, cmd50ms, HAL_MAX_DELAY);		/* 32 usec */
 	
@@ -347,8 +356,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[12], 2, cmd50ms, HAL_MAX_DELAY);		/* 25 usec */
 	
@@ -363,8 +372,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(160);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[14], 8, cmd50ms, HAL_MAX_DELAY);		/* 45 usec */
 	
@@ -379,8 +388,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(84);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[16], 6, cmd50ms, HAL_MAX_DELAY);		/* 39 usec */
 	
@@ -395,8 +404,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(30);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[18], 4, cmd50ms, HAL_MAX_DELAY);		/* 32 usec */
 	
@@ -411,8 +420,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[20], 2, cmd50ms, HAL_MAX_DELAY);		/* 25 usec */
 
@@ -427,8 +436,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(390);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[22], 22, cmd50ms, HAL_MAX_DELAY);		/* 92 usec */
 	
@@ -443,8 +452,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(264);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P5, (char*) &dataBuffer[24], 10, cmd50ms, HAL_MAX_DELAY);		/* 52 usec */
 	
@@ -459,8 +468,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(160);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[26], 8, cmd50ms, HAL_MAX_DELAY);		/* 45 usec */
 	
@@ -475,8 +484,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(84);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[28], 6, cmd50ms, HAL_MAX_DELAY);		/* 39 usec */
 	
@@ -491,8 +500,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(30);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[30], 4, cmd50ms, HAL_MAX_DELAY);		/* 32 usec */
 	
@@ -507,8 +516,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[32], 2, cmd50ms, HAL_MAX_DELAY);		/* 25 usec */
 	
@@ -523,8 +532,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(264);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[34], 10, cmd50ms, HAL_MAX_DELAY);		/* 52 usec */
 	
@@ -539,8 +548,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(160);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[36], 8, cmd50ms, HAL_MAX_DELAY);		/* 45 usec */
 
@@ -555,8 +564,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(84);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[38], 6, cmd50ms, HAL_MAX_DELAY);		/* 39 usec */
 
@@ -571,8 +580,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(30);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[40], 4, cmd50ms, HAL_MAX_DELAY);		/* 32 usec */
 	
@@ -587,8 +596,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[42], 2, cmd50ms, HAL_MAX_DELAY);		/* 25 usec */
 	
@@ -603,8 +612,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(490);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P1, (char*) &dataBuffer[44], 30, cmd50ms, HAL_MAX_DELAY);		/* 180 usec */
 	
@@ -619,8 +628,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(264);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[46], 18, cmd50ms, HAL_MAX_DELAY);		/* 80 usec */
 	
@@ -635,8 +644,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(160);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[48], 8, cmd50ms, HAL_MAX_DELAY);		/* 45 usec */
 	
@@ -651,8 +660,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(84);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[50], 6, cmd50ms, HAL_MAX_DELAY);		/* 39 usec */
 	
@@ -667,8 +676,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(30);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[52], 4, cmd50ms, HAL_MAX_DELAY);		/* 32 usec */
 	
@@ -683,8 +692,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[54], 2, cmd50ms, HAL_MAX_DELAY);		/* 25 usec */
 	
@@ -699,8 +708,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(160);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P1, (char*) &dataBuffer[56], 8, cmd50ms, HAL_MAX_DELAY);		/* 45 usec */
 
@@ -715,8 +724,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(84);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[58], 6, cmd50ms, HAL_MAX_DELAY);		/* 39 usec */
 	
@@ -731,8 +740,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(30);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[60], 4, cmd50ms, HAL_MAX_DELAY);		/* 32 usec */
 	
@@ -747,8 +756,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[62], 2, cmd50ms, HAL_MAX_DELAY);		/* 25 usec */
 	
@@ -763,8 +772,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(264);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P1, (char*) &dataBuffer[64], 10, cmd50ms, HAL_MAX_DELAY);		/* 52 usec */
 	
@@ -779,8 +788,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(160);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P1, (char*) &dataBuffer[66], 8, cmd50ms, HAL_MAX_DELAY);		/* 45 usec */
 	
@@ -795,8 +804,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(84);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[68], 6, cmd50ms, HAL_MAX_DELAY);		/* 39 usec */
 	
@@ -811,8 +820,8 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	Delay_us(30);
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[70], 4, cmd50ms, HAL_MAX_DELAY);		/* 32 usec */
 	
@@ -827,15 +836,15 @@ void SampleAndForward(void)
 	}
 	/* Wait some time to download the data from previous module */
 	
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_on();
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_on();
 	/* Transmit the samples back */
 	writePxMutex(P6, (char*) &dataBuffer[72], 2, cmd50ms, HAL_MAX_DELAY);		/* 25 usec */
 			
 #endif
 
-	/* LED status mode 2: Measure download delay */
-	if (ledStatus == 2)		LED_off();	
+	/* LED status mode 3: Measure download delay */
+	if (ledStatus == 3)		LED_off();	
 
 	/* Reset the buffer */
 	memset(dataBuffer, 0xFF, ArraySize*2);

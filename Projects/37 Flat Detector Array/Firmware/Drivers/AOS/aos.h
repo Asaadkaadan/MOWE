@@ -277,11 +277,13 @@ extern uint8_t syncCodeMode1;
 extern uint8_t testCodeMode1;
 extern uint8_t syncCodeMode2;
 extern uint8_t testCodeMode2;
+extern uint8_t syncCodeMode3;
+extern uint8_t testCodeMode3;
 extern uint8_t streamTest;
 extern uint8_t streamLoose;
 extern uint8_t ledStatus;
 extern uint8_t myTrig;												
-extern uint8_t dataBuffer[74];
+extern uint8_t dataBuffer[ArraySize*2];
 
 /* External function prototypes -----------------------------------------------*/
 extern void AOS_init(void);
