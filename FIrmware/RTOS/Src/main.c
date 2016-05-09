@@ -14,6 +14,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "aos.h"				// AOS
 
+
 /* Private variables ---------------------------------------------------------*/
 extern TaskHandle_t FrontEndTaskHandle;
 
@@ -54,7 +55,7 @@ void FrontEndTask(void * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(100);
+    osDelay(10);
   }
 	
 }

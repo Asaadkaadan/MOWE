@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * File Name          : topology_hexaTX.h
+  * File Name          : topology_hexaRX.h
   * Date               : 09/17/2015
 	*	Author 						 : Asaad Kaadan
   * Description        : Array topology definition. To be filled out manually or
@@ -40,13 +40,13 @@ enum	modulePorts{_P1=1, _P2, _P3, _P4, _P5, _P6};
 
 // Topology
 static uint16_t array[_N][7] = {
-{ _HO02R0, 0, 0, 0, 0, 0, 0}		// Module 1
+{ _HO01R1, 0, 0, 0, 0, 0, 0}		// Module 1
 };
 
 // Configurations for duplex serial ports
 #ifdef _module_1
 	#define	_module	1
-	#define	HO02R0	1
+	#define	HO01R1	1
 	#define	_P1pol_normal	1
 	#define	_P2pol_normal	1
 	#define	_P3pol_normal	1

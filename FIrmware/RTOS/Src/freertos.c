@@ -154,7 +154,6 @@ uint8_t port;
   /* Infinite loop */
 	for( ;; )
 	{
-
 		/* Read one character at a time. */
 		if (portStatus[port] == FREE)
 			readPxMutex(port, &cRxedChar, sizeof( cRxedChar ), cmd50ms, cmd50ms);

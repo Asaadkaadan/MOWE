@@ -28,7 +28,7 @@
 // PO02R0: Pentagon transmiter with VSMY2850G compatible with hexagons 30mm height
 	
 // Enumerations
-enum	modulePartNumbers{_HO01R3, _HO01R2, _HO02R0, _HO02R1, _PO01R0, _PO02R0};
+enum	modulePartNumbers{_HO01R1, _HO01R2, _HO01R3, _HO02R0, _HO02R1, _HO02R2, _PO01R0, _PO02R0};
 enum	portPol{_normal, _reversed};
 enum	modulePorts{_P1=1, _P2, _P3, _P4, _P5, _P6};
 
